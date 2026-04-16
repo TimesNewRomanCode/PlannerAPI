@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -24,5 +26,15 @@ class AddressRepository(BaseRepository[Address, AddressCreate, AddressUpdate]):
         result = await session.execute(stmt)
         return result.scalars().all()
 
+    @staticmethod
+    async def get_addresses_array_by_sid(session: AsyncSession, college_sid: uuid):
+        stmt = (
+            select(Address)
+            .join(College, College.sid == Address.college_sid)
+            .where(College.sid == college_sid)
+            .order_by(Address.name.asc())
+        )
+        result = await session.execute(stmt)
+        return result.scalars().all()
 
 address_repository = AddressRepository(Address)

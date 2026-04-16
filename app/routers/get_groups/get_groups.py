@@ -8,7 +8,7 @@ from app.services.services_for_models.groups import GroupService
 router = APIRouter(prefix="/get_groups", tags=["get_groups"])
 
 @router.post("/")
-async def registration(
+async def get_groups(
     data: GroupGet,
     session: AsyncSession = Depends(get_session),
     service: GroupService = Depends(GroupService),

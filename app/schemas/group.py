@@ -14,3 +14,6 @@ class GroupGet(BaseModel):
 class GroupUpdate(BaseModel):
     name: str | None = None
     is_active: bool | None = None
+
+class GroupRegistration(BaseModel):
+    address_sid: UUID

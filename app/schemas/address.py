@@ -1,3 +1,5 @@
+import uuid
+
 from pydantic import BaseModel
 
 
@@ -7,3 +9,6 @@ class AddressCreate(BaseModel):
 
 class AddressUpdate(BaseModel):
     pass
+
+class AddressRegistration(BaseModel):
+    college_sid: uuid.UUID

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.router import router
+from app.routers import router
 
-app = FastAPI(title="name")
+app = FastAPI(title="Planner")
 app.include_router(router)
