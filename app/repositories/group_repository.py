@@ -38,5 +38,16 @@ class GroupRepository(BaseRepository[Group, GroupCreate, GroupUpdate]):
         result = await session.execute(query)
         return result.scalars().all()
 
+    @staticmethod
+    async def get_group_by_address_name(session: AsyncSession, address_name: str):
+        query = (
+            select(Group)
+            .join(Address)
+            .where(Address.name == address_name)
+            .order_by(Group.name.asc())
+        )
+        result = await session.execute(query)
+        return result.scalars().all()
+
 
 group_repository = GroupRepository(Group)
