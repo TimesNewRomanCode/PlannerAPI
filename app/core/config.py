@@ -11,6 +11,18 @@ class Settings(BaseSettings):
     DB_PORT: int = 5432
     DB_NAME: str = "AASK"
 
+    S3_ENDPOINT: str = "http://localhost:9000"
+    S3_ACCESS_KEY: str = "admin"
+    S3_SECRET_KEY: str = "password123"
+    S3_BUCKET: str = "images"
+
+    @field_validator("S3_ENDPOINT")
+    @classmethod
+    def validate_endpoint(cls, v: str):
+        if not v.startswith("http"):
+            raise ValueError("S3_ENDPOINT должен начинаться с http/https")
+        return v
+
     @computed_field
     @property
     def DATABASE_URL(self) -> str:

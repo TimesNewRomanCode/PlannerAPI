@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm.strategy_options import joinedload
@@ -9,7 +11,7 @@ from app.schemas.user import UserCreate, UserUpdate
 
 class UserRepository(BaseRepository[User, UserCreate, UserUpdate]):
     @staticmethod
-    async def get_by_chat_id(session: AsyncSession, chat_id: int):
+    async def get_all_by_user_sid(session: AsyncSession, user_sid: uuid):
         stmt = (
             select(User)
             .options(
@@ -17,7 +19,7 @@ class UserRepository(BaseRepository[User, UserCreate, UserUpdate]):
                 .joinedload(Group.address)
                 .joinedload(Address.college),
             )  # todo посмотреть как правильно
-            .where(User.chat_id == chat_id)
+            .where(User.sid == user_sid)
         )
         result = await session.execute(stmt)
         return result.scalar_one_or_none()

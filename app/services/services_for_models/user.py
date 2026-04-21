@@ -23,35 +23,3 @@ class UserServices:
     async def get_user(self, session: AsyncSession):
         user = await user_repository.get_all(session)
         return user
-
-
-    async def newsletter_true_for_user(
-        self,
-        session: AsyncSession,
-        chat_id: int,
-    ):
-        chat_id = str(chat_id)
-        user = await user_repository.get_by_chat_id(session, chat_id)
-        if user:
-            user.is_newsletter = True
-            await session.commit()
-        else:
-            print("Такого пользователя нет")
-
-        return user
-
-
-    async def newsletter_false_for_user(
-        self,
-        session: AsyncSession,
-        chat_id: int,
-    ):
-        chat_id = str(chat_id)
-        user = await user_repository.get_by_chat_id(session, chat_id)
-        if user:
-            user.is_newsletter = False
-            await session.commit()
-        else:
-            print("Такого пользователя нет")
-
-        return user

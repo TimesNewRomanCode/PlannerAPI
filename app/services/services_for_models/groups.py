@@ -1,6 +1,6 @@
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.repositories import group_repository, address_repository
+from app.repositories import group_repository, address_repository, user_repository
 from typing import List
 
 from app.schemas.group import GroupCreate
@@ -17,6 +17,20 @@ class GroupService:
     async def get_groups_array_by_address_sid(self, session: AsyncSession, address_sid) -> List[str]:
         existing_groups = await group_repository.get_group_by_address_sid(
             session, address_sid
+        )
+        result = []
+        for group in existing_groups:
+            result.append({
+                "sid": group.sid,
+                "name": group.name,
+            })
+
+        return result
+
+    async def get_groups_array_by_user_sid(self, session: AsyncSession, user_sid) -> List[str]:
+        user = await user_repository.get_all_by_user_sid(session, user_sid)
+        existing_groups = await group_repository.get_group_by_address_name(
+            session, user.address_name
         )
         result = []
         for group in existing_groups:

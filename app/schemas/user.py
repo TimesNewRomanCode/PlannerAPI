@@ -1,8 +1,6 @@
 import uuid
 from pydantic import BaseModel, Field
 
-
-
 class UserCreate(BaseModel):
     sid: uuid.UUID
     group_sid: uuid.UUID
