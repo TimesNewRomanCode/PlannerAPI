@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   app:
     build:
@@ -5,6 +7,12 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - postgres
+    ports:
+      - "8000:8000"
+    networks:
+      - internal
+      - shared-network
+
   postgres:
     image: postgres:15
     environment:
@@ -16,6 +24,14 @@ services:
     ports:
       - "5432:5432"
     command: postgres -c listen_addresses='*'
+    networks:
+      - internal
 
 volumes:
   postgres_data:
+
+networks:
+  internal:
+    driver: bridge
+  shared-network:
+    external: true
