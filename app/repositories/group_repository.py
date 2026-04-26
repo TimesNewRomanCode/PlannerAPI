@@ -26,7 +26,7 @@ class GroupRepository(BaseRepository[Group, GroupCreate, GroupUpdate]):
     async def get_group_by_address_sid(session: AsyncSession, address_sid: uuid.UUID):
         query = (
             select(Group)
-            .join(Address, Address.sid == Group.users)
+            .join(Address)
             .where(Address.sid == address_sid)
             .order_by(Group.name.asc())
         )
