@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 
+from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.s3 import get_image_from_s3
@@ -12,6 +13,12 @@ class ScheduleService:
         user = await user_repository.get_all_by_user_sid(
             session, user_sid
         )
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found",
+            )
+
         day_month = int(date.strftime("%d%m"))
         key_for_s3 = f"{user.college_name}/{user.address_name}/{day_month}/{user.group_name}.png"
         group_name = user.group_name
@@ -23,9 +30,14 @@ class ScheduleService:
         group = await group_repository.get_all_by_group_sid(
             session, group_sid
         )
+        if group is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Group not found",
+            )
+
         day_month = int(date.strftime("%d%m"))
         key_for_s3 = f"{group.college_name}/{group.address_name}/{day_month}/{group.name}.png"
         group_name = group.name
         photo = get_image_from_s3(key_for_s3, group_name)
         return photo
-

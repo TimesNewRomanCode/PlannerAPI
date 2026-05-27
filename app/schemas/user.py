@@ -22,3 +22,5 @@ class UserRegistration(BaseModel):
     username: str
     group_sid: uuid.UUID
 
+class DeleteUser(BaseModel):
+    sid: uuid.UUID

@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_session
 from app.schemas.address import AddressRegistration
 from app.schemas.group import GroupRegistration
-from app.schemas.user import UserRegistration
+from app.schemas.user import UserRegistration, DeleteUser
 from app.services.services_for_models.address import AddressServices
 from app.services.services_for_models.college import CollegeServices
 from app.services.services_for_models.groups import GroupService
@@ -42,6 +42,14 @@ async def registration_users(
     service: UserServices = Depends(UserServices),
 ):
     return await service.register_user(session,data.group_sid, data.username)
+
+@router.delete("/delete_user")
+async def delete_users(
+    data: DeleteUser,
+    session: AsyncSession = Depends(get_session),
+    service: UserServices = Depends(UserServices),
+):
+    return await service.delete_user(session,data.sid)
 
 
 

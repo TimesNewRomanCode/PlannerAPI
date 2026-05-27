@@ -23,3 +23,7 @@ class UserServices:
     async def get_user(self, session: AsyncSession):
         user = await user_repository.get_all(session)
         return user
+
+    async def delete_user(self, session: AsyncSession, sid: uuid):
+        await user_repository.delete(session, sid)
+        return "User deleted"
